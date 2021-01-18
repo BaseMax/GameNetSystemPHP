@@ -52,6 +52,13 @@ $oldPlays = $db->selects("plays", ["pending"=>0]);
 ?>
 <title>سیستم گیم نت</title>
 <meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<center>
+<a target="_blank" href="setting.php">بخش تنظیمات</a>
+</center>
+
+<hr>
 
 <center>
 	<h1>درج مشتری  حضوری</h1>
@@ -91,6 +98,7 @@ $oldPlays = $db->selects("plays", ["pending"=>0]);
 			<td>نام</td>
 			<td>پلن</td>
 			<td>ساعت</td>
+			<td>زمان به دقیقه</td>
 			<td>مدیریت</td>
 		</tr>
 		<?php foreach($activePlays as $play) { ?>
@@ -121,11 +129,31 @@ $oldPlays = $db->selects("plays", ["pending"=>0]);
 				<?php } ?>
 			</td>
 			<td>
+				<?php foreach($orders as $order) { ?>
+					<?php
+					$noYet = false;
+					if($order["endTime"] == "" || $order["endTime"] == null) {
+						$order["endTime"] = jmktime();
+						$noYet = true;
+					}
+					$timeDiff = $order["endTime"] - $order["startTime"];
+					$timeMin = ceil($timeDiff / 60);
+					print $timeMin;
+					print ' دقیقه';
+					if($noYet === true) {
+						print " (تا کنون)";
+					}
+					// $order["endTime"] - $order["startTime"];
+					?>
+					<br>
+				<?php } ?>
+			</td>
+			<td>
 				<!-- <a href="?type=endPlan&id=<?= $play["id"] ?>">تمام کردن بازی</a> -->
-				<a href="endPlay.php?id=<?= $play["id"] ?>">تمام کردن بازی</a>
+				<a class="button" href="endPlay.php?id=<?= $play["id"] ?>">تمام کردن بازی</a>
 				&nbsp;&nbsp;
 				<!-- <a href="?type=changePlan&id=<?= $plan["id"]?>">تغییر پلن</a> -->
-				<a href="changePlayPlan.php?id=<?= $play["id"]?>">تغییر پلن</a>
+				<a class="button" href="changePlayPlan.php?id=<?= $play["id"]?>">تغییر پلن</a>
 			</td>
 		</tr>
 		<?php } ?>
@@ -144,6 +172,7 @@ $oldPlays = $db->selects("plays", ["pending"=>0]);
 			<td>نام</td>
 			<td>پلن</td>
 			<td>ساعت</td>
+			<td>زمان به دقیقه</td>
 			<td>قیمت</td>
 		</tr>
 		<?php foreach($oldPlays as $play) { ?>
@@ -173,6 +202,17 @@ $oldPlays = $db->selects("plays", ["pending"=>0]);
 				<?php } ?>
 			</td>
 			<td>
+				<?php foreach($orders as $order) { ?>
+					<?php
+					$timeDiff = $order["endTime"] - $order["startTime"];
+					$timeMin = ceil($timeDiff / 60);
+					print $timeMin;
+					// $order["endTime"] - $order["startTime"];
+					?> دقیقه
+					<br>
+				<?php } ?>
+			</td>
+			<td>
 				<?= $play["price"]?> تومان
 			</td>
 		</tr>
@@ -180,61 +220,4 @@ $oldPlays = $db->selects("plays", ["pending"=>0]);
 	</table>
 	<input type="hidden" name="type" value="plan">
 	<button name="submit">ذخیره</button>
-</form>
-
-<center>
-	<h1>ویرایش پلن ها</h1>
-</center>
-<form action="" method="POST">
-	<table width="100%" dir="rtl" border="1">
-		<tr>
-			<td>نوع</td>
-			<td>اسم پلن</td>
-			<td>قیمت دقیقه</td>
-		</tr>
-		<?php foreach($plans as $plan) { ?>
-		<tr>
-			<td>
-				<input type="hidden" name="id[]" value="<?= $plan["id"]?>">
-				<input type="text" name="family[]" value="<?= $plan["family"]?>">
-			</td>
-			<td>
-				<input type="text" name="name[]" value="<?= $plan["name"]?>">
-			</td>
-			<td>
-				<input type="number" name="price[]" value="<?= $plan["price"]?>">
-			</td>
-		</tr>
-		<?php } ?>
-	</table>
-	<input type="hidden" name="type" value="plan">
-	<button name="submit">ذخیره</button>
-</form>
-
-<center>
-	<h1>درج پلن جدید</h1>
-</center>
-<form>
-	<table width="100%" dir="rtl" border="1">
-		<tr>
-			<td>نوع</td>
-			<td>
-				<input type="text" name="family">
-			</td>
-		</tr>
-		<tr>
-			<td>نام پلن</td>
-			<td>
-				<input type="text" name="name">
-			</td>
-		</tr>
-		<tr>
-			<td>قیمت دقیقه ای</td>
-			<td>
-				<input type="number" name="price">
-			</td>
-		</tr>
-	</table>
-	<input type="hidden" name="type" value="newPlan">
-	<button name="submit">درج پلن جدید</button>
 </form>
