@@ -1,0 +1,13 @@
+body {
+	font-family: Tahoma;
+	font-size: 18px;
+}
+.button {
+	background: blue;
+	color: white;
+	border-radius: 8px;
+	padding: 8px;
+	line-height: 50px;
+	text-decoration: none;
+	cursor: pointer;
+}
