@@ -23,6 +23,12 @@ if(isset($_POST["submit"]) and isset($_POST["type"])) {
 		}
 	}
 	if($_POST["type"] === "newPlan") {
+		$values = [
+			"family"=>$_POST["family"],
+			"name"=>$_POST["name"],
+			"price"=>$_POST["price"],
+		];
+		$db->insert("plans", $values);
 	}
 }
 $plans = $db->selects("plans");
