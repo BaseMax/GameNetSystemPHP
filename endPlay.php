@@ -40,6 +40,9 @@ $db->update("plays", $clauses, $values);
 
 // header("Location: /");
 ?>
+<title>سیستم گیم نت</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
 
 مشخصه مشتری/سیستم: <?= $play["name"] ?>
 <br>
