@@ -39,6 +39,10 @@ if(isset($_POST["submit"])) {
 	exit();
 }
 ?>
+<title>سیستم گیم نت</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+
 <form action="" method="POST">
 	<select name="plan">
 		<?php foreach($plans as $plan) { ?>
