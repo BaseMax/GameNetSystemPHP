@@ -1,6 +1,12 @@
+* {
+  box-sizing: border-box;
+  font-family: Tahoma;
+  direction: rtl;
+}
 body {
-	font-family: Tahoma;
+  text-align: right;
 	font-size: 18px;
+  /*background:#000 url(logo.png) top left fixed no-repeat;*/
 }
 .button {
 	background: blue;
@@ -10,4 +16,98 @@ body {
 	line-height: 50px;
 	text-decoration: none;
 	cursor: pointer;
+}
+/* Style the tab */
+.tab {
+  background: linear-gradient(#fff, #dcdcdc);
+  border-top: 1px solid #aaa;
+  float: left;
+  /*border: 1px solid #ccc;*/
+  /*background-color: #f1f1f1;*/
+  /*width: 30%;*/
+  /*height: 300px;*/
+  width: 100%;
+  /*height: auto;*/
+  height: 40px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  color: black;
+  /*width: 100%;*/
+  /*display: block;*/
+  width: auto;
+  float: right;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 12px;
+  height: 40px;
+  font-size: 16px;
+  border-right: 1px solid #fff;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #ccc;
+  width: 100%;
+  height: auto;
+}
+
+.rows-8, .rows-3, .rows-1 {
+  width: 100%;
+  /*float: right;*/
+  display: table;
+  text-align: center;
+}
+.rows-8 .col, .rows-3 .col, .rows-1 .col {
+  padding: 10px;
+  width: 110px;
+  height: auto;
+  border: 1px solid black;
+  /*direction: ltr;*/
+  /*float: left;*/
+  vertical-align: top;
+  display: inline-block;
+  /*display: table;*/
+  /*float: none;*/
+  margin: 2px;
+}
+.col.red {
+  background: red;
+}
+.col.gray {
+  background: gray;
+}
+.col.green {
+  background: green;
+  color: white;
+}
+.left-side {
+  float: left;
+}
+.right-side {
+  float: right;
+}
+.clear {
+  clear: both;
 }
