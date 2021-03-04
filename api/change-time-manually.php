@@ -4,6 +4,7 @@ require "../_core.php";
 $orderID = $_POST["orderID"];
 $time = $_POST["time"];
 $daste = $_POST["daste"];
+$timer = (int)$_POST["timer"];
 
 $clauses = [
 	"id"=>$orderID,
@@ -32,6 +33,13 @@ $values = [
 
 if($order["endTime"] != "" && $order["endTime"] != null) {
 	$values["endTime"]=$endTime;
+}
+
+$values["timer"]=$timer;
+
+if($timer === 1) {
+    $values["startTime"] = jmktime();
+    $values["endTime"] = $values["startTime"] + ($time * 60);
 }
 
 $values["planDaste"] = $daste;
