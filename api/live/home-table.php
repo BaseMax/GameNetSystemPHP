@@ -27,18 +27,6 @@ foreach($plans as $l=>$plan) {
         
         $section["plan"] = $plan;
         
-        $toPlans = [];
-        foreach($plans as $_plan) {
-            for($k=1;$k<=$_plan["count"]; $k++) {
-                if($i != $m) {
-                    $toPlans[] = [
-                        "key"=> $_plan["id"]."_".$k,
-                        "value"=> $m . " - ". $_plan["family"],
-                    ];
-                }
-                $m++;
-            }
-        }
         // $section["toPlans"] = $toPlans;
 
 		$section["p1"] = $i;
@@ -145,7 +133,7 @@ foreach($plans as $im=>$plan) {
     		$last_active_order["time_in_min"] = "-";
     		$last_active_order["price"]="-";
     		$last_active_order["daste"]="-";
-    
+         	$item["timer"] = (int) 0;
     	}
     	else {
     	   // print_r($last_active_order);
@@ -154,9 +142,9 @@ foreach($plans as $im=>$plan) {
     		    $item["timer_left"] = jmktime() - $last_active_order["endTime"];
     		    $item["timer_left"] = -1 * round($item["timer_left"] / 60);
     		}
+         	$item["timer"] = (int) $last_active_order["timer"];
     	}
     	
-    	$item["timer"] = (int) $last_active_order["timer"];
     
         $item["id"] = $i;
     
@@ -190,27 +178,28 @@ foreach($plans as $im=>$plan) {
     	}
     	
         $sumFood = (int) 0;
-
-    	$play = $db->select("plays", ["id"=>$last_active_order["playID"]]);
-    	if($play == null || $play == []) {
-    	    $play["prePayment"] = (int) 0;
-    	}
-    	else {
-        	$playID = $play["id"];
-            // Foods
-            $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
-    
-            if(is_array($foods) and count($foods) > 0) {
-                foreach($foods as $food) {
-                    $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
-            		$_food = $db->select("foods", ["id"=>$food["foodID"]]);
-            		$food["count"] = (int) $food["count"];
-            		$food["price"] = (int) $food["price"];
-            		$food["priceAll"] = (int) ($food["count"] * $food["price"]);
-                	$sumFood += $food["priceAll"];
-                }
-            }
-    	}
+	if(isset(  $last_active_order["playID"] )) {
+	    	$play = $db->select("plays", ["id"=>$last_active_order["playID"]]);
+	    	if($play == null || $play == []) {
+	    	    $play["prePayment"] = (int) 0;
+	    	}
+	    	else {
+			$playID = $play["id"];
+		    // Foods
+		    $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
+	    
+		    if(is_array($foods) and count($foods) > 0) {
+		        foreach($foods as $food) {
+		            $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
+		    		$_food = $db->select("foods", ["id"=>$food["foodID"]]);
+		    		$food["count"] = (int) $food["count"];
+		    		$food["price"] = (int) $food["price"];
+		    		$food["priceAll"] = (int) ($food["count"] * $food["price"]);
+		        	$sumFood += $food["priceAll"];
+		        }
+		    }
+	    	}
+	 }
     	
     	$item["price_food"] = (int) $sumFood;
 
@@ -237,3 +226,4 @@ if(isset($_GET["log"])) {
 else {
     print json_encode($result);
 }
+
