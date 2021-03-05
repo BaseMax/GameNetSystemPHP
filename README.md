@@ -12,3 +12,7 @@ This system was dynamic at first, but recently it was LIVE and the data is updat
 ![](demo2.jpg)
 
 ![](demo3.jpg)
+
+Feel free to add style to tables and other parts. Any participation is appreciated.
+
+© copyright 2021. Max Base
