@@ -256,8 +256,12 @@ var systems;
 /* LIVE */
 function live_table(obj) {
     let html = ``
+    let i=1;
     for(let plan of LIVE.table) {
-        let box = `<div class="rows-${plan.count}">`
+        let box = ``;
+	if(i !== 3) {
+	    box = `<div class="rows-${plan.count}">`;
+	}
         for(let item of plan.items) {
             let block = `<div id="btn-system-${item.id}" class="col ${item.color}" onclick="openCity(event, 'system-${item.id}')">
 			    ${item.id}
@@ -286,7 +290,11 @@ function live_table(obj) {
 		</div>`
             box += block
         }
-        html += box
+	if(i !== 2) {
+	    box += `</div>`;
+	}
+        html += box;
+	i++;
     }
     table_list.innerHTML = html
 }
