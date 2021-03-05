@@ -15,4 +15,4 @@ This system was dynamic at first, but recently it was LIVE and the data is updat
 
 Feel free to add style to tables and other parts. Any participation is appreciated.
 
-© copyright 2021. Max Base
+© Copyright 2021. Max Base
