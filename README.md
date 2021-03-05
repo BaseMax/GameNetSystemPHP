@@ -8,3 +8,7 @@ Working with this system is simple and the language is Persian.
 This system was dynamic at first, but recently it was LIVE and the data is updated every few seconds. (XHR, Ajax and get data as JSON format)
 
 ![](demo.jpg)
+
+![](demo2.jpg)
+
+![](demo3.jpg)
