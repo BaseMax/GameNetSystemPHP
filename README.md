@@ -1,3 +1,3 @@
 # GameNetSystemPHP
 
-![](demo.png)
+![](demo.jpg)
