@@ -5,8 +5,9 @@
 }
 body {
   text-align: right;
-	font-size: 18px;
+  font-size: 18px;
   /*background:#000 url(logo.png) top left fixed no-repeat;*/
+  background: #e5f9ff !important;
 }
 .button {
 	background: blue;
