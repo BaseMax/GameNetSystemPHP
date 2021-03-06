@@ -171,7 +171,7 @@ function addFood(elm, planIndex, planTabID, planID, planFamily) {
   console.log(count.value);
   console.log(planID);
   console.log(planIndex);
-  let sure = confirm("آیا از اضافه کردن "  +count.value + " تا "+food.value +" به سبد مطمئن هستید؟");
+  let sure = confirm("آیا از اضافه کردن "  +count.value + " عدد به سبد مطمئن هستید؟");
   if(sure === true) {
     sendAddFood(planID, planIndex, planTabID, food.value, count.value);
   }
