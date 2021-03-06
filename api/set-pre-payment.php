@@ -14,7 +14,7 @@ require "../_core.php";
 // planFamily: planFamily,
 
 
-$sql = "SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND `endTime` IS NULL ORDER BY `id` DESC;";
+$sql = "SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." ORDER BY `id` DESC;";
 $last_order = $db->selectRaw($sql);
 // print $sql."\n";
 if($last_order == null || $last_order == []) {
