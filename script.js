@@ -142,7 +142,11 @@ function startTransfer(elm, planIndex, planTabID, planID, planFamily) {
   console.log(planIndex);
   console.log(planID);
   console.log(planFamily);
-  sendStartTransfer(planID, planIndex, planTabID, planFamily, daste.value, daste.selectedIndex, planPart[0], planPart[1]);
+
+  let sure = confirm("آیا از انتقال مطمئن هستید؟");
+  if(sure === true) {
+    sendStartTransfer(planID, planIndex, planTabID, planFamily, daste.value, daste.selectedIndex, planPart[0], planPart[1]);
+  }
 }
 
 function sendStartTransfer(planID, planIndex, planTabID, planFamily, planDasteName, planDasteIndex, toPlanID, toPlanIndex) {
@@ -167,7 +171,10 @@ function addFood(elm, planIndex, planTabID, planID, planFamily) {
   console.log(count.value);
   console.log(planID);
   console.log(planIndex);
-  sendAddFood(planID, planIndex, planTabID, food.value, count.value);
+  let sure = confirm("آیا از اضافه کردن "  +count.value + " تا "+food.value +" به سبد مطمئن هستید؟");
+  if(sure === true) {
+    sendAddFood(planID, planIndex, planTabID, food.value, count.value);
+  }
 }
 
 function sendAddFood(planID, planIndex, planTabID, food, count) {
@@ -263,42 +270,42 @@ function live_table(obj) {
     let i=1;
     for(let plan of LIVE.table) {
         let box = ``;
-	if(i !== 3) {
-	    box = `<div class="rows-${plan.count}">`;
-	}
+  if(i !== 3) {
+      box = `<div class="rows-${plan.count}">`;
+  }
         for(let item of plan.items) {
             let block = `<div id="btn-system-${item.id}" class="col ${item.color}" onclick="openCity(event, 'system-${item.id}')">
-			    ${item.id}
-			    &nbsp;
-			    ${item.family}
-			<hr>
-			<b>قیمت: </b>
-			<br>
-			<label>
-			    ${item.price}
-			</label>
-			<hr>
-			<b>زمان: </b>
-			<br>
-			<label>
-			    ${
-			        item.timer === 1 ? item.timer_left : item.time
-			    }
-			</label>
-			<hr>
-			<b>دسته: </b>
-			<br>
-			<label>
-			    ${item.daste}
-			</label>
-		</div>`
+          ${item.id}
+          &nbsp;
+          ${item.family}
+      <hr>
+      <b>قیمت: </b>
+      <br>
+      <label>
+          ${item.price}
+      </label>
+      <hr>
+      <b>زمان: </b>
+      <br>
+      <label>
+          ${
+              item.timer === 1 ? item.timer_left : item.time
+          }
+      </label>
+      <hr>
+      <b>دسته: </b>
+      <br>
+      <label>
+          ${item.daste}
+      </label>
+    </div>`
             box += block
         }
-	if(i !== 2) {
-	    box += `</div>`;
-	}
+  if(i !== 2) {
+      box += `</div>`;
+  }
         html += box;
-	i++;
+  i++;
     }
     table_list.innerHTML = html
 }
@@ -367,7 +374,7 @@ function live() {
 }
 
 window.addEventListener('load', function() {
-    table_list = document.querySelector("#new-customer");
+    table_list = document.querySelector("#table-list");
     systems = document.querySelectorAll(".tabcontent-system");
     live();
     setInterval(live, 5000);
