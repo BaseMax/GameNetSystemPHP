@@ -63,7 +63,11 @@ function startPlaying(elm, planIndex, planTabID, planID, planFamily) {
   console.log(planIndex);
   console.log(planID);
   console.log(planFamily);
-  sendStartPlaying(planID, planIndex, planTabID, planFamily, select.value, select.selectedIndex);
+
+  let sure = confirm("آیا از شروغ زمان "  +select.value +" مطمئن هستید؟");
+  if(sure === true) {
+    sendStartPlaying(planID, planIndex, planTabID, planFamily, select.value, select.selectedIndex);
+  }
 }
 
 function sendStartPlaying(planID, planIndex, planTabID, planFamily, planDasteName, planDasteIndex) {
