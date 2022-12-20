@@ -14,5 +14,6 @@ $clauses = [
 	"id"=>$orders_food["id"],
 ];
 $db->delete("orders_food", $clauses);
+
 // print_r($orders_food);
 header("Location: endPlay.php?i=".$_GET["i"]."&j=".$_GET["j"]."&id=".$_GET["playId"]);
