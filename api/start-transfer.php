@@ -20,16 +20,19 @@ require "../_core.php";
 
 
 $clauses = [
-    "planID"=>$_POST["planID"],
-    "planIndexID"=>$_POST["planIndex"],
+    "planID"=>$_POST["toPlanID"],
+    "planIndexID"=>$_POST["toPlanIndex"],
     "status"=>1,
 ];
+// print_r($clauses);
 $last_active_order = $db->select("orders", $clauses, "ORDER BY `id` DESC");
+// print_r($last_active_order);
 
-if($last_active_order != [] && $last_active_order != null) {}
-else {
+if($last_active_order != [] && $last_active_order != null) {
 	print "امکان انتقال به این جایگاه وجود ندارد مشغول است!";
 	exit();
+}
+else {
 }
 
 $last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND ((`timer` = 0 AND `endTime` IS NULL AND `has_canceled` = 0) or (`timer` = 0 AND `endTime` IS NOT NULL AND `has_canceled` = 1) or (`timer` = 1)) AND `status` = 1 ORDER BY `id` DESC;");
