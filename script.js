@@ -286,49 +286,32 @@ function openChangeTime(type, elm, orderID, default_value) {
                 
                 // let has_timer = confirm("آیا زمان معکوس اعمال شود؟");
                 // console.log(has_timer);
+                Swal.fire({
+                  title: 'تایمر',
+                  text: "آیا زمان معکوس اعمال شود؟",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  cancelButtonText: 'خیر',
+                  confirmButtonText: 'بله'
+                }).then((result) => {
+                  field = elm.parentElement.querySelector("input[name=timer]");
+                  if (result.isConfirmed) field.value = 1;
+                  else field.value = 0;
 
-Swal.fire({
-  title: 'تایمر',
-  text: "آیا زمان معکوس اعمال شود؟",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  cancelButtonText: 'خیر',
-  confirmButtonText: 'بله'
-}).then((result) => {
-
-                field = elm.parentElement.querySelector("input[name=timer]");
-
-  if (result.isConfirmed) {
-
-                field.value = 1;
-  }
-  else {
-                      field.value = 0;
-
-  }
-                changeTime(elm, orderID);
-})
-
-
+                  changeTime(elm, orderID, "اعمال وضعیت معکوس");
+                });
                 // field = elm.parentElement.querySelector("input[name=timer]");
                 // field.value = (has_timer === true ? 1 : 0);
                 // changeTime(elm, orderID);
-
-                
             }
-
         });
-
-
-
     }
     else {
         // let daste = prompt("تعداد دسته:", default_value);
-        Swal.fire(
-        {
-            title:"تعداد دسته:",
+        Swal.fire({
+          title:"تعداد دسته:",
           input: 'text',
           inputLabel: 'تعداد دسته',
           inputValue: default_value,
@@ -352,14 +335,14 @@ Swal.fire({
                 
                 let field = elm.parentElement.querySelector("input[name=daste]");
                 field.value = daste;
-                changeTime(elm, orderID);
+                changeTime(elm, orderID, "تغییر تعداد دسته");
             }
         });
 
     }
 }
 
-function changeTime(elm, orderID) {
+function changeTime(elm, orderID, text) {
   let editBox = elm.parentElement;
   editBox.style.display = "none";
 
@@ -378,7 +361,7 @@ function changeTime(elm, orderID) {
     daste: daste.value,
   }, function(res) {
     // alert(res);
-    Swal.fire("تنظیم زمان دستی", res);
+    Swal.fire(text, res);
   })
 }
 

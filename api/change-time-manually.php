@@ -52,4 +52,4 @@ $values["planPrice"] = $price;
 
 $db->update("orders", $clauses, $values);
 
-print "تغییر زمان انجام شد.";
+print "تغییر انجام شد.";

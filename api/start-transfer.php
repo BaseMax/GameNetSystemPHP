@@ -18,6 +18,20 @@ require "../_core.php";
 // [planIndex] => 10
 // [planTabID] => 2
 
+
+$clauses = [
+    "planID"=>$_POST["planID"],
+    "planIndexID"=>$_POST["planIndex"],
+    "status"=>1,
+];
+$last_active_order = $db->select("orders", $clauses, "ORDER BY `id` DESC");
+
+if($last_active_order != [] && $last_active_order != null) {}
+else {
+	print "امکان انتقال به این جایگاه وجود ندارد مشغول است!";
+	exit();
+}
+
 $last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND ((`timer` = 0 AND `endTime` IS NULL AND `has_canceled` = 0) or (`timer` = 0 AND `endTime` IS NOT NULL AND `has_canceled` = 1) or (`timer` = 1)) AND `status` = 1 ORDER BY `id` DESC;");
 if($last_order == null || $last_order == []) {
 	$values=[
@@ -64,11 +78,12 @@ foreach($orders as $order) {
 		];
 		$db->update("orders", ["id"=>$order["id"]], $values);
 	}
+
+	$db->update("orders", ["playID"=>$order["playID"]], [
+		"status"=>0,
+	]);
 }
 
-$db->update("orders", ["playID"=>$order["playID"]], [
-    "status"=>0,
-]);
 
 $values = [
 	"playID"=>$play["id"],
