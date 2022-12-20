@@ -10,7 +10,9 @@ require "../_core.php";
 // $play = $db->select("plays", $clauses);
 
 
-$last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." ORDER BY `id` DESC;");
+// $last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND `status` = 1 ORDER BY `id` DESC;");
+// $last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND ((`timer` = 0 AND `endTime` IS NULL) or (`timer` = 1)) AND `status` = 1 ORDER BY `id` DESC;");
+$last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND ((`timer` = 0 AND `endTime` IS NULL AND `has_canceled` = 0) or (`timer` = 0 AND `endTime` IS NOT NULL AND `has_canceled` = 1) or (`timer` = 1)) AND `status` = 1 ORDER BY `id` DESC;");
 if($last_order == null || $last_order == []) {
 	$values=[
 	];

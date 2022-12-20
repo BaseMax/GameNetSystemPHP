@@ -5,6 +5,6 @@ require "phpedb.php";
 
 $db = new database();
 $db->db="gamenet";
-$db->connect("localhost", "root", "01");
+$db->connect("localhost", "root", "");
 
 require "jdf.php";

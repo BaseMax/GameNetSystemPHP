@@ -40,6 +40,12 @@ $foods = $db->selects("foods");
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="style.css">
 
+
+<a href="index.php">
+    برگشت به اتاق فرمان
+</a>
+<br>
+
 <center>
 	<h1>ویرایش انبار</h1>
 </center>

@@ -48,8 +48,16 @@ $foods = $db->selects("foods");
 ?>
 <title>سیستم گیم نت</title>
 <meta charset="utf-8">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="style.css?r=<?=rand()?>">
+<link rel="stylesheet" type="text/css" href="sweetalert2.min.css?r=<?=rand()?>">
+
+
 <script type="text/javascript" src="script.js?r=<?=rand()?>"></script>
+<!--<script type="text/javascript" src="script.js"></script>-->
+
+<script type="text/javascript" src="sweetalert2.min.js"></script>
+<!--<script type="text/javascript" src="sweetalert2@10.js"></script>-->
+<!--<script type="text/javascript" src="polyfill.js"></script>-->
 
 <div class="tab">
 	<button class="tablinks active" onclick="openCity(event, 'new-customer')" id="tab-new-customer">اتاق فرمان</button>
@@ -134,7 +142,7 @@ else {
     					<td>ساعت</td>
     					<td>زمان به دقیقه</td>
     					<td>قیمت</td>
-    					<!--<td>مدیریت</td>-->
+    					<td>مدیریت</td>
     				</tr>
 				</thead>
 				<tbody class="table_content_rows"></tbody>
@@ -162,9 +170,9 @@ else {
 
 <div class="tabcontent" id="new-customer">
     <center>
-        <a target="_blank" href="setting.php">بخش حسابداری</a>
+        <a href="setting.php">بخش حسابداری</a>
         &nbsp;&nbsp;
-        <a target="_blank" href="food.php">بخش بوفه</a>
+        <a href="food.php">بخش بوفه</a>
     </center>
     <hr>
     <div id="table-list"></div>

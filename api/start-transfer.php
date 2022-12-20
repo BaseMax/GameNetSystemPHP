@@ -18,7 +18,7 @@ require "../_core.php";
 // [planIndex] => 10
 // [planTabID] => 2
 
-$last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND `endTime` IS NULL ORDER BY `id` DESC;");
+$last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_POST["planID"]." AND `planIndexID` = ".$_POST["planTabID"]." AND ((`timer` = 0 AND `endTime` IS NULL AND `has_canceled` = 0) or (`timer` = 0 AND `endTime` IS NOT NULL AND `has_canceled` = 1) or (`timer` = 1)) AND `status` = 1 ORDER BY `id` DESC;");
 if($last_order == null || $last_order == []) {
 	$values=[
 	];
@@ -28,7 +28,7 @@ else {
 	// $playID = 1;
 	$playID = $last_order["playID"];
 }
-// print_r($last_order);
+//print_r($last_order);
 
 $clauses = [
 	"id"=>$playID,
@@ -55,7 +55,9 @@ $clauses = [
 ];
 $orders = $db->selects("orders", $clauses);
 foreach($orders as $order) {
-	if($order["endTime"] == null || $order["endTime"] == "") {
+	if(
+	    ($order["timer"] == 0 and ($order["endTime"] == null || $order["endTime"] == ""))
+	) {
 		$values = [
 			"endTime"=>jmktime(),
 			"status"=>0,
@@ -63,6 +65,10 @@ foreach($orders as $order) {
 		$db->update("orders", ["id"=>$order["id"]], $values);
 	}
 }
+
+$db->update("orders", ["playID"=>$order["playID"]], [
+    "status"=>0,
+]);
 
 $values = [
 	"playID"=>$play["id"],

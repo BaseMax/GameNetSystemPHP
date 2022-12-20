@@ -12,7 +12,8 @@ $i=1;
 foreach($plans as $l=>$plan) {
     for($j=1;$j<=$plan["count"]; $j++) {
         $section = [];
-        $last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$plan["id"]." AND `planIndexID` = ".$j." ORDER BY `id` DESC;");
+        $last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$plan["id"]." AND `planIndexID` = ".$j." AND `status` = 1 ORDER BY `id` DESC;");
+        // print_r($last_order);
         if($last_order == null || $last_order == []) {
             $play = [];
             $play["prePayment"] = 0;
@@ -76,6 +77,8 @@ foreach($plans as $l=>$plan) {
             if($table["timer"] === 1) {
                 $table["timer_left"] = jmktime() - $order["endTime"];
                 $table["timer_left"] = -1 * round($table["timer_left"] / 60);
+                $table["timer_left_price"] = $table["timer_left"] * $order["planPrice"];
+                $table["timer_left_price"] = number_format($table["timer_left_price"]);
             }
             
             $table["id"] = $order["id"];
@@ -120,8 +123,8 @@ foreach($plans as $im=>$plan) {
         if($last_active_order != [] && $last_active_order != null) {
             $color = "red";
             $last_active_order["time_in_min"]=jmktime() - $last_active_order["startTime"];
-            $last_active_order["time_in_min"]=round($last_active_order["time_in_min"] / 60);
-            $last_active_order["price"]=round($last_active_order["time_in_min"] * $last_active_order["planPrice"]);
+            $last_active_order["time_in_min"]=ceil($last_active_order["time_in_min"] / 60); // *
+            $last_active_order["price"]=ceil($last_active_order["time_in_min"] * $last_active_order["planPrice"]);  // *
             $last_active_order["daste"]=$last_active_order["planDaste"];
         }
         else {
@@ -140,7 +143,7 @@ foreach($plans as $im=>$plan) {
             if($last_active_order["timer"] == 1) {
                 $color = "gray";
                 $item["timer_left"] = jmktime() - $last_active_order["endTime"];
-                $item["timer_left"] = -1 * round($item["timer_left"] / 60);
+                $item["timer_left"] = -1 * ceil($item["timer_left"] / 60); // *
             }
             $item["timer"] = (int) $last_active_order["timer"];
         }
@@ -177,30 +180,35 @@ foreach($plans as $im=>$plan) {
             }
         }
         
+        $play = [];
         $sumFood = (int) 0;
-    if(isset(  $last_active_order["playID"] )) {
+        if(isset(  $last_active_order["playID"] )) {
             $play = $db->select("plays", ["id"=>$last_active_order["playID"]]);
             if($play == null || $play == []) {
                 $play["prePayment"] = (int) 0;
             }
             else {
-            $playID = $play["id"];
-            // Foods
-            $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
-        
-            if(is_array($foods) and count($foods) > 0) {
-                foreach($foods as $food) {
-                    $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
-                    $_food = $db->select("foods", ["id"=>$food["foodID"]]);
-                    $food["count"] = (int) $food["count"];
-                    $food["price"] = (int) $food["price"];
-                    $food["priceAll"] = (int) ($food["count"] * $food["price"]);
-                    $sumFood += $food["priceAll"];
+                $playID = $play["id"];
+                // Foods
+                $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
+            
+                if(is_array($foods) and count($foods) > 0) {
+                    foreach($foods as $food) {
+                        $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
+                        $_food = $db->select("foods", ["id"=>$food["foodID"]]);
+                        $food["count"] = (int) $food["count"];
+                        $food["price"] = (int) $food["price"];
+                        $food["priceAll"] = (int) ($food["count"] * $food["price"]);
+                        $sumFood += $food["priceAll"];
+                    }
                 }
             }
-            }
-     }
+         }
         
+        if($play == null || $play == []) {
+            $play["prePayment"] = (int) 0;
+        }
+
         $item["price_food"] = (int) $sumFood;
 
         $item["price_pre"] = (int) $play["prePayment"];

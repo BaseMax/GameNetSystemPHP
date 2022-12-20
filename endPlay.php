@@ -13,7 +13,7 @@ if(!isset($_GET["i"], $_GET["j"], $_GET["id"])) {
 // 	"planIndexID"=>$_GET["j"],
 // ];
 // $last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_GET["id"]. " AND `planIndexID` = ".$_GET["j"]." AND `endTime` IS NULL ORDER BY `id` DESC");
-$last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_GET["id"]. " AND `planIndexID` = ".$_GET["j"]." ORDER BY `id` DESC");
+$last_order = $db->selectRaw("SELECT * FROM ".$db->db.".`orders` WHERE `planID` = ".$_GET["id"]. " AND `planIndexID` = ".$_GET["j"]." AND `status` = 1 ORDER BY `id` DESC");
 if($last_order == null || $last_order == []) {
 	header("Location: index.php");
 	// exit("Not found!");
@@ -58,7 +58,14 @@ $foods = $db->selects("orders_food", ["playID"=>$play["id"]]);
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="style.css">
 
-مشخصه مشتری/سیستم
+<a href="index.php">
+    برگشت به اتاق فرمان
+</a>
+<br>
+
+<h3>
+مشخصه مشتری/سیستم    
+</h3>
 <br>
 <?php
 // print_r($orders);
@@ -146,7 +153,10 @@ $sumFood = 0;
 			<td><?= $_food["name"];?></td>
 			<td><?= $food["count"];?></td>
 			<td><?= number_format($food["price"]) ?></td>
-			<td><?= number_format($food["priceAll"]) ?></td>
+			<td>
+			    <?= number_format($food["priceAll"]) ?>
+    			<a style="text-decoration: none;float:left; width: auto;padding: 2px;border-radius: 4px;background-color: green;color: white;" href="deleteFoodInOrder.php?i=<?= $_GET["i"] ?>&j=<?= $_GET["j"] ?>&id=<?= $order["id"] ?>&playId=<?= $_GET["id"] ?>&k=<?= $food["id"] ?>">حذف</a>
+			</td>
 		</tr>
 	<?php } ?>
 </table>

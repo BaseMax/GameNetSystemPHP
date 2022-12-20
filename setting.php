@@ -72,6 +72,12 @@ $oldPlays = $db->selects("plays", ["pending"=>0]);
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="style.css">
 
+<a href="index.php">
+    برگشت به اتاق فرمان
+</a>
+<br>
+
+
 <center>
 	<h1>ویرایش پلن ها</h1>
 </center>
