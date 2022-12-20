@@ -18,7 +18,7 @@ if($order == null || $order == []) {
 // print_r($order);
 
 if($order["endTime"] == "" || $order["endTime"] == null) {
-	$endTime = jmktime();
+	$endTime = mytime();
 }
 else {
 	$endTime = (int) $order["endTime"];
@@ -38,7 +38,7 @@ if($order["endTime"] != "" && $order["endTime"] != null) {
 $values["timer"]=$timer;
 
 if($timer === 1) {
-    $values["startTime"] = jmktime();
+    $values["startTime"] = mytime();
     $values["endTime"] = $values["startTime"] + ($time * 60);
 }
 

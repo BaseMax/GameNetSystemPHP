@@ -1,3 +1,3 @@
 <?php
 include "_core.php";
-print jmktime();
+print mytime();

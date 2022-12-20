@@ -24,14 +24,14 @@ if(isset($_POST["submit"])) {
 
 	foreach($orders as $order) {
 		$values = [
-			"endTime"=>jmktime(),
+			"endTime"=>mytime(),
 		];
 		$db->update("orders", ["id"=>$order["id"]], $values);
 	}
 
 	$values = [
 		"playID"=>$playID,
-		"startTime"=>jmktime(),
+		"startTime"=>mytime(),
 		"planID"=>$planID,
 	];
 	$db->insert("orders", $values);

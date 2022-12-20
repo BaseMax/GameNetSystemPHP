@@ -45,7 +45,7 @@ $orders = $db->selects("orders", $clauses);
 foreach($orders as $order) {
 	if($order["endTime"] == null || $order["endTime"] == "") {
 		$values = [
-			"endTime"=>jmktime(),
+			"endTime"=>mytime(),
 		];
 		$db->update("orders", ["id"=>$order["id"]], $values);
 	}
@@ -53,7 +53,7 @@ foreach($orders as $order) {
 
 $values = [
 	"playID"=>$play["id"],
-	"startTime"=>jmktime(),
+	"startTime"=>mytime(),
 	"planID"=>$plan["id"],
 	"planDaste"=>$_POST["planDasteIndex"],
 	"planIndexID"=>$_POST["planTabID"],

@@ -57,7 +57,7 @@ foreach($plans as $l=>$plan) {
 
             $noYet = false;
             if($order["endTime"] == "" || $order["endTime"] == null) {
-                $order["_endTime"] = jmktime();
+                $order["_endTime"] = mytime();
                 $noYet = true;
             }
             else {
@@ -75,7 +75,7 @@ foreach($plans as $l=>$plan) {
             $table["timer"] = (int) $order["timer"];
 
             if($table["timer"] === 1) {
-                $table["timer_left"] = jmktime() - $order["endTime"];
+                $table["timer_left"] = mytime() - $order["endTime"];
                 $table["timer_left"] = -1 * round($table["timer_left"] / 60);
                 $table["timer_left_price"] = $table["timer_left"] * $order["planPrice"];
                 $table["timer_left_price"] = number_format($table["timer_left_price"]);
@@ -122,7 +122,7 @@ foreach($plans as $im=>$plan) {
         $color = "gray";
         if($last_active_order != [] && $last_active_order != null) {
             $color = "red";
-            $last_active_order["time_in_min"]=jmktime() - $last_active_order["startTime"];
+            $last_active_order["time_in_min"]=mytime() - $last_active_order["startTime"];
             $last_active_order["time_in_min"]=ceil($last_active_order["time_in_min"] / 60); // *
             $last_active_order["price"]=ceil($last_active_order["time_in_min"] * $last_active_order["planPrice"]);  // *
             $last_active_order["daste"]=$last_active_order["planDaste"];
@@ -142,7 +142,7 @@ foreach($plans as $im=>$plan) {
            // print_r($last_active_order);
             if($last_active_order["timer"] == 1) {
                 $color = "gray";
-                $item["timer_left"] = jmktime() - $last_active_order["endTime"];
+                $item["timer_left"] = mytime() - $last_active_order["endTime"];
                 $item["timer_left"] = -1 * ceil($item["timer_left"] / 60); // *
             }
             $item["timer"] = (int) $last_active_order["timer"];
@@ -164,7 +164,7 @@ foreach($plans as $im=>$plan) {
             $orders = $db->selects("orders", ["playID"=>$last_active_order["playID"]]);
             foreach($orders as $ix=>$order) {
                 if($order["endTime"] == null || $order["endTime"] == "") {
-                    $endTime = jmktime();
+                    $endTime = mytime();
                     $orders[$ix]["endTime"] = $endTime;
                     $orders[$ix]["endTimeNow"] = true;
                 }

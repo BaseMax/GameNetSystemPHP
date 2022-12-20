@@ -37,7 +37,7 @@ $orders = $db->selects("orders", ["playID"=>$playID]);
 // print_r($orders);
 foreach($orders as $i=>$order) {
 	if($order["endTime"] == null || $order["endTime"] == "") {
-		$endTime = jmktime();
+		$endTime = mytime();
 		// $db->update("orders", ["id"=>$order["id"]], ["endTime"=>$endTime]);
 		$orders[$i]["endTime"] = $endTime;
 		$orders[$i]["endTimeNow"] = true;

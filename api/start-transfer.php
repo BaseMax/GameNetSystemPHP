@@ -76,7 +76,7 @@ foreach($orders as $order) {
 	    ($order["timer"] == 0 and ($order["endTime"] == null || $order["endTime"] == ""))
 	) {
 		$values = [
-			"endTime"=>jmktime(),
+			"endTime"=>mytime(),
 			"status"=>0,
 		];
 		$db->update("orders", ["id"=>$order["id"]], $values);
@@ -90,7 +90,7 @@ foreach($orders as $order) {
 
 $values = [
 	"playID"=>$play["id"],
-	"startTime"=>jmktime(),
+	"startTime"=>mytime(),
 
 	"planID"=>$newPlan["id"],
 	"planIndexID"=>$_POST["toPlanIndex"],

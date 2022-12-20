@@ -34,7 +34,7 @@ if(isset($_POST["submit"]) and isset($_POST["type"])) {
 			$playID = $db->insert("plays", $values);
 			$values = [
 				"playID"=>$playID,
-				"startTime"=>jmktime(),
+				"startTime"=>mytime(),
 				"planID"=>$_POST["plan"],
 				"planPrice"=>$price["price"],
 			];
