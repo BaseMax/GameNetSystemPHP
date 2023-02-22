@@ -172,6 +172,8 @@ else {
     <center>
         <a href="setting.php">بخش حسابداری</a>
         &nbsp;&nbsp;
+        <a href="report.php">بخش گزارش‌گیری</a>
+        &nbsp;&nbsp;
         <a href="food.php">بخش بوفه</a>
     </center>
     <hr>
