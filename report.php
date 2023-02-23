@@ -10,30 +10,39 @@ function reportGames(array $from, array $to) : array
 {
     global $db;
 
-    $result = [];
-    $sql = "SELECT plans.family, plans.name1, plans.name2, plans.name3, plans.name4, plans.price1, plans.price2, plans.price3, plans.price4, orders.startTime, orders.endTime
+    $sql = "SELECT orders.planID, orders.planIndexID, orders.planDaste, plans.family, orders.planPrice, plans.name1, plans.name2, plans.name3, plans.name4, plans.price1, plans.price2, plans.price3, plans.price4, orders.startTime, orders.endTime
         FROM `orders`
         INNER JOIN `plans` ON `plans`.`id` = `orders`.`planID`
-        WHERE `orders`.`datetime`
+        WHERE `orders`.`endTime` IS NOT NULL AND
+            `orders`.`has_canceled` = 0 AND
+            `orders`.`datetime`
             BETWEEN '".$from["year"]."-".$from["month"]."-".$from["day"]."' AND '".$to["year"]."-".$to["month"]."-".$to["day"]."'";
     // var_dump($sql);
 
     $rows = $db->selectsRaw($sql);
-    // foreach ($rows as $i => $row) {
-    //     $result[$i]["profit"] += $row["price"] - $row["our_price"];
-    //     $result[$i]["total_price"] = $row["price"] * $row["count"];
-    //     $result[$i]["total_profit"] = $row["count"] * $result[$i]["profit"];
-    // }
+    foreach ($rows as $i => $order) {
+        $timeDiff = $order["endTime"] - $order["startTime"];
+        $timeMin = ceil($timeDiff / 60);
+        $price = $timeMin * $order["planPrice"];
 
-    return $result;
+        if ($order["endTime"] === null) {
+            $rows[$i]["total_price"] = null;
+        } else {
+            $rows[$i]["total_price"] = $price;
+        }
+
+        $rows[$i]["family_index"] = $order["planIndexID"] . "امی";
+        $rows[$i]["family_daste"] = $order["name" . $order["planDaste"]];
+    }
+
+    return $rows;
 }
 
 function reportFoods(array $from, array $to) : array
 {
     global $db;
 
-    $result = [];
-    $sql = "SELECT foods.name, orders_food.price, orders_food.our_price
+    $sql = "SELECT foods.name, orders_food.price, orders_food.our_price, `orders_food`.count
         FROM `orders_food`
         INNER JOIN `foods` ON `orders_food`.`foodId` = `foods`.`id`
         WHERE `orders_food`.`datetime`
@@ -42,12 +51,12 @@ function reportFoods(array $from, array $to) : array
 
     $rows = $db->selectsRaw($sql);
     foreach ($rows as $i => $row) {
-        $result[$i]["profit"] += $row["price"] - $row["our_price"];
-        $result[$i]["total_price"] = $row["price"] * $row["count"];
-        $result[$i]["total_profit"] = $row["count"] * $result[$i]["profit"];
+        $rows[$i]["profit"] = $row["price"] - $row["our_price"];
+        $rows[$i]["total_price"] = $row["price"] * $row["count"];
+        $rows[$i]["total_profit"] = $row["count"] * $rows[$i]["profit"];
     }
 
-    return $result;
+    return $rows;
 }
 
 if (isset($_POST["submit"])) {
@@ -114,10 +123,10 @@ if (isset($_POST["submit"])) {
             </tr>
             <?php foreach ($result1 as $row) { ?>
                 <tr>
-                    <td><?=$row["system"]?></td>
-                    <td><?=$row["from"]?></td>
-                    <td><?=$row["to"]?></td>
-                    <td><?=number_format($row["price"])?></td>
+                    <td><?=$row["family"]?> - <?=$row["family_index"]?> - <?=$row["family_daste"]?></td>
+                    <td><?=jdate("Y/m/d h:j:s", $row["startTime"])?></td>
+                    <td><?=jdate("Y/m/d h:j:s", $row["endTime"])?></td>
+                    <td><?=$row["total_price"] === null ? "-" : number_format($row["total_price"]) . " تومان"?></td>
                 </tr>
             <?php } ?>
         </table>
@@ -152,6 +161,7 @@ if (isset($_POST["submit"])) {
     <b>از تاریخ</b>
 
     <select name="from_year">
+        <option value="1400">1399</option>
         <option value="1400">1400</option>
         <?php for ($this_year = 1401; $this_year <= $now_year; $this_year++) { ?>
             <option value="<?=$this_year?>"<?php print ($this_year == $now_year) ? " selected=\"\"" : ""?>><?=$this_year?></option>
