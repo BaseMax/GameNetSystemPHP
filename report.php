@@ -1,6 +1,21 @@
 <?php
 require "_core.php";
 
+if (!isset($_SESSION["report"])) {
+    header("Location: report-login.php");
+    exit();
+}
+
+$session_report = $_SESSION["report"] ?? 0;
+if (!is_numeric($session_report)) {
+    header("Location: report-login.php");
+    exit();
+}
+if ($_SESSION["report"] < time() - 60 * 60 * 24) {
+    header("Location: report-login.php");
+    exit();
+}
+
 $result1 = [];
 $result2 = [];
 
