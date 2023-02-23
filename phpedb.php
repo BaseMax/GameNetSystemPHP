@@ -21,9 +21,16 @@ class database
 	{
 		try
 		{
-			$this->database=new PDO("mysql:host=$host;",$user,$pass);
-			$this->database->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-			$this->database->query('SET NAMES '.'utf8mb4');
+			// pdo connect and set database
+			$this->database = new PDO("mysql:host=".$host.";charset=utf8", $user, $pass);
+			$this->database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->database->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+			// set default database from $this->db
+			$this->query("use `".$this->db."`;");
+
+			// set default charset
+			$this->query("SET NAMES 'utf8';");
 		}
 		catch(PDOException $e)
 		{

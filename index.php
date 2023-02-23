@@ -170,9 +170,9 @@ else {
 
 <div class="tabcontent" id="new-customer">
     <center>
-        <a href="setting.php">بخش حسابداری</a>
+        <a href="setting.php">تنظیمات</a>
         &nbsp;&nbsp;
-        <a href="report.php">بخش گزارش‌گیری</a>
+        <a href="report.php">حسابداری</a>
         &nbsp;&nbsp;
         <a href="food.php">بخش بوفه</a>
     </center>

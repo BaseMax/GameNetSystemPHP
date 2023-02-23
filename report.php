@@ -11,6 +11,20 @@ function reportGames(array $from, array $to) : array
     global $db;
 
     $result = [];
+    $sql = "SELECT plans.family, plans.name1, plans.name2, plans.name3, plans.name4, plans.price1, plans.price2, plans.price3, plans.price4, orders.startTime, orders.endTime
+        FROM `orders`
+        INNER JOIN `plans` ON `plans`.`id` = `orders`.`planID`
+        WHERE `orders`.`datetime`
+            BETWEEN '".$from["year"]."-".$from["month"]."-".$from["day"]."' AND '".$to["year"]."-".$to["month"]."-".$to["day"]."'";
+    // var_dump($sql);
+
+    $rows = $db->selectsRaw($sql);
+    // foreach ($rows as $i => $row) {
+    //     $result[$i]["profit"] += $row["price"] - $row["our_price"];
+    //     $result[$i]["total_price"] = $row["price"] * $row["count"];
+    //     $result[$i]["total_profit"] = $row["count"] * $result[$i]["profit"];
+    // }
+
     return $result;
 }
 
@@ -19,8 +33,12 @@ function reportFoods(array $from, array $to) : array
     global $db;
 
     $result = [];
-    $sql = "SELECT foods.name, orders_food.price, orders_food.our_price FROM `orders_food` INNER JOIN `foods` ON `orders_food`.`food_id` = `foods`.`id` WHERE `date` BETWEEN '".$from["year"]."-".$from["month"]."-".$from["day"]."' AND '".$to["year"]."-".$to["month"]."-".$to["day"]."'";
-    var_dump($sql);
+    $sql = "SELECT foods.name, orders_food.price, orders_food.our_price
+        FROM `orders_food`
+        INNER JOIN `foods` ON `orders_food`.`foodId` = `foods`.`id`
+        WHERE `orders_food`.`datetime`
+            BETWEEN '".$from["year"]."-".$from["month"]."-".$from["day"]."' AND '".$to["year"]."-".$to["month"]."-".$to["day"]."'";
+    // var_dump($sql);
 
     $rows = $db->selectsRaw($sql);
     foreach ($rows as $i => $row) {
@@ -45,11 +63,27 @@ if (isset($_POST["submit"])) {
         "day" => $_POST["to_day"],
     ];
 
-    if ($show_result === "games" || $show_result === "both") {
+    // Convert jalali to gregorian
+    $from = jalali_to_gregorian($from["year"], $from["month"], $from["day"]);
+    $to = jalali_to_gregorian($to["year"], $to["month"], $to["day"]);
+
+    // Re-key and change keys
+    $from = [
+        "year" => $from[0],
+        "month" => $from[1],
+        "day" => $from[2],
+    ];
+    $to = [
+        "year" => $to[0],
+        "month" => $to[1],
+        "day" => $to[2],
+    ];
+
+    if ($show_result === "games" || $show_result === "all") {
         $result1 = reportGames($from, $to);
     }
 
-    if ($show_result === "foods" || $show_result === "both") {
+    if ($show_result === "foods" || $show_result === "all") {
         $result2 = reportFoods($from, $to);
     }
 
@@ -70,7 +104,7 @@ if (isset($_POST["submit"])) {
 </center>
 
 <?php if (isset($show_result)) { ?>
-    <?php if ($show_result === "games" || $show_result === "both") { ?>
+    <?php if ($show_result === "games" || $show_result === "all") { ?>
         <table width="100%" border="1px">
             <tr>
                 <th>سیستم</th>
@@ -89,7 +123,7 @@ if (isset($_POST["submit"])) {
         </table>
     <?php } ?>
 
-    <?php if ($show_result === "foods" || $show_result === "both") { ?>
+    <?php if ($show_result === "foods" || $show_result === "all") { ?>
         <table width="100%" border="1px">
             <tr>
                 <th>جنس</th>
@@ -162,10 +196,10 @@ if (isset($_POST["submit"])) {
     <br>
     <b>نوع</b>
     <select name="type">
-        <option value="plays">بازی ها</option>
+        <option value="games">بازی ها</option>
         <option value="foods">غذاها</option>
         <option value="coffee">کافه</option>
-        <!-- <option value="all">همه</option> -->
+        <option value="all">همه</option>
     </select>
     <br>
     <button type="submit" name="submit">نمایش</button>
