@@ -11,7 +11,8 @@ if (!is_numeric($session_report)) {
     header("Location: report-login.php");
     exit();
 }
-if ($_SESSION["report"] < time() - 60 * 60 * 24) {
+// only keep it valid for 10 minutes
+if ($_SESSION["report"] < time() - 600) {
     header("Location: report-login.php");
     exit();
 }
