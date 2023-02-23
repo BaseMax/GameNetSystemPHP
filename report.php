@@ -95,7 +95,6 @@ if (isset($_POST["submit"])) {
     if ($show_result === "foods" || $show_result === "all") {
         $result2 = reportFoods($from, $to);
     }
-
 }
 ?>
 <title>سیستم گیم نت</title>
@@ -111,50 +110,6 @@ if (isset($_POST["submit"])) {
 <center>
 	<h1>حسابداری</h1>
 </center>
-
-<?php if (isset($show_result)) { ?>
-    <?php if ($show_result === "games" || $show_result === "all") { ?>
-        <table width="100%" border="1px">
-            <tr>
-                <th>سیستم</th>
-                <th>از</th>
-                <th>تا</th>
-                <th>قیمت</th>
-            </tr>
-            <?php foreach ($result1 as $row) { ?>
-                <tr>
-                    <td><?=$row["family"]?> - <?=$row["family_index"]?> - <?=$row["family_daste"]?></td>
-                    <td><?=jdate("Y/m/d h:j:s", $row["startTime"])?></td>
-                    <td><?=jdate("Y/m/d h:j:s", $row["endTime"])?></td>
-                    <td><?=$row["total_price"] === null ? "-" : number_format($row["total_price"]) . " تومان"?></td>
-                </tr>
-            <?php } ?>
-        </table>
-    <?php } ?>
-
-    <?php if ($show_result === "foods" || $show_result === "all") { ?>
-        <table width="100%" border="1px">
-            <tr>
-                <th>جنس</th>
-                <th>فی خرید</th>
-                <th>فی فروش</th>
-                <th>تعداد</th>
-                <th>جمع فروش</th>
-                <th>جمع سود</th>
-            </tr>
-            <?php foreach ($result2 as $row) { ?>
-                <tr>
-                    <td><?=$row["name"]?></td>
-                    <td><?=number_format($row["our_price"])?></td>
-                    <td><?=number_format($row["price"])?></td>
-                    <td><?=$row["count"]?></td>
-                    <td><?=number_format($row["total_price"])?></td>
-                    <td><?=number_format($row["total_profit"])?></td>
-                </tr>
-            <?php } ?>
-        </table>
-    <?php } ?>
-<?php } ?>
 
 <form action="" method="POST" style="display: flex; justify-content: center;flex-direction: column;">
     <!-- a form to ask from-date, to-date, type select -->
@@ -214,3 +169,56 @@ if (isset($_POST["submit"])) {
     <br>
     <button type="submit" name="submit">نمایش</button>
 </form>
+
+
+<?php if (isset($show_result)) { ?>
+    <?php if ($show_result === "games" || $show_result === "all") { ?>
+        <h2>بازی ها</h2>
+        <?php $total_price = 0 ?>
+        <table width="100%" border="1px">
+            <tr>
+                <th>سیستم</th>
+                <th>از</th>
+                <th>تا</th>
+                <th>قیمت</th>
+            </tr>
+            <?php foreach ($result1 as $row) { ?>
+                <tr>
+                    <td><?=$row["family"]?> - <?=$row["family_index"]?> - <?=$row["family_daste"]?></td>
+                    <td><?=jdate("Y/m/d h:j:s", $row["startTime"])?></td>
+                    <td><?=jdate("Y/m/d h:j:s", $row["endTime"])?></td>
+                    <td><?=$row["total_price"] === null ? "-" : number_format($row["total_price"]) . " تومان"?></td>
+                </tr>
+                <?php $total_price += $row["total_price"] ?? 0 ?>
+            <?php } ?>
+        </table>
+        <b>جمع کل: <?=number_format($total_price)?> تومان</b>
+    <?php } ?>
+
+    <?php if ($show_result === "foods" || $show_result === "all") { ?>
+        <h2>غذاها</h2>
+        <?php $total_price = 0 ?>
+        <table width="100%" border="1px">
+            <tr>
+                <th>جنس</th>
+                <th>فی خرید</th>
+                <th>فی فروش</th>
+                <th>تعداد</th>
+                <th>جمع فروش</th>
+                <th>جمع سود</th>
+            </tr>
+            <?php foreach ($result2 as $row) { ?>
+                <tr>
+                    <td><?=$row["name"]?></td>
+                    <td><?=number_format($row["our_price"])?></td>
+                    <td><?=number_format($row["price"])?></td>
+                    <td><?=$row["count"]?></td>
+                    <td><?=number_format($row["total_price"])?></td>
+                    <td><?=number_format($row["total_profit"])?></td>
+                </tr>
+                <?php $total_price += $row["total_price"] ?? 0 ?>
+            <?php } ?>
+        </table>
+        <b>جمع کل: <?=number_format($total_price)?> تومان</b>
+    <?php } ?>
+<?php } ?>

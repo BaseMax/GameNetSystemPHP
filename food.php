@@ -65,7 +65,7 @@ $foods = $db->selects("foods");
 				<input type="text" name="name[]" value="<?= $food["name"]?>">
 			</td>
 			<td>
-				<input type="text" name="buy[]" value="<?= $food["buy"]?>">
+				<input type="text" name="buy[]" value="<?= $food["buy"]?>"> تومان
 			</td>
 			<td>
 				<input type="number" name="sale[]" value="<?= $food["sale"]?>"> تومان
